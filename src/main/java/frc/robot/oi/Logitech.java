@@ -40,7 +40,7 @@ public class Logitech extends XboxController {
     private static final int LEFT_STICK_BUTTON_ID = 11;
     private static final int RIGHT_STICK_BUTTON_ID = 12;
 
-    public final  JoystickButton aButton;
+    public final JoystickButton aButton;
     public final JoystickButton bButton;
     public final JoystickButton xButton;
     public final JoystickButton yButton;
@@ -91,10 +91,28 @@ public class Logitech extends XboxController {
         rightStickButton = new JoystickButton(this, RIGHT_STICK_BUTTON_ID);
     }
 
+    public double getLeftStickX() {
+        //return super.getRawAxis(XboxController.Axis.kLeftY.value);
+        if(Math.abs(getRawAxis(0)) > deadband) {
+            return getRawAxis(0); // got this off driver station
+        } else {
+            return 0;
+        }
+    }
+
     public double getLeftStickY() {
         //return super.getRawAxis(XboxController.Axis.kLeftY.value);
         if(Math.abs(getRawAxis(1)) > deadband) {
             return getRawAxis(1); // got this off driver station
+        } else {
+            return 0;
+        }
+    }
+
+    public double getRightStickX() {
+        //return super.getRawAxis(XboxController.Axis.kLeftY.value);
+        if(Math.abs(getRawAxis(2)) > deadband) {
+            return getRawAxis(2); // got this off driver station
         } else {
             return 0;
         }

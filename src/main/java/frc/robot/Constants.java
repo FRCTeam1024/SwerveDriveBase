@@ -22,5 +22,13 @@ public final class Constants {
         public static final double kvTurning = 0.75; 
         public static final double kaTurning = 0; 
         public static final double kMaxAngularSpeedRadiansPerSecond = Math.PI * 2;
+
+        //no numbers below this are accurate, everything must be configure/found
+        public static final double kModuleMaxAngularVelocity = 1;
+        public static final double kModuleMaxAngularAcceleration = 1;
+
+        public static final int gyroID = 1;
+
+        public static final int kMaxSpeed = 3;
     }
 }
