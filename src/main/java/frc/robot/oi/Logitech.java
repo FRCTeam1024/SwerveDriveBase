@@ -19,6 +19,8 @@ import edu.wpi.first.wpilibj2.command.button.POVButton;
  * elsewhere.
  */
 public class Logitech extends XboxController {
+    
+    // Joystick values below this number will be ignored.
     private final double deadband = 0.1;
 
     //Moved these here since they are specific to the Logitech controller and will
@@ -92,7 +94,6 @@ public class Logitech extends XboxController {
     }
 
     public double getLeftStickX() {
-        //return super.getRawAxis(XboxController.Axis.kLeftY.value);
         if(Math.abs(getRawAxis(0)) > deadband) {
             return getRawAxis(0); // got this off driver station
         } else {
@@ -101,7 +102,6 @@ public class Logitech extends XboxController {
     }
 
     public double getLeftStickY() {
-        //return super.getRawAxis(XboxController.Axis.kLeftY.value);
         if(Math.abs(getRawAxis(1)) > deadband) {
             return getRawAxis(1); // got this off driver station
         } else {
@@ -110,7 +110,6 @@ public class Logitech extends XboxController {
     }
 
     public double getRightStickX() {
-        //return super.getRawAxis(XboxController.Axis.kLeftY.value);
         if(Math.abs(getRawAxis(2)) > deadband) {
             return getRawAxis(2); // got this off driver station
         } else {
@@ -119,7 +118,6 @@ public class Logitech extends XboxController {
     }
 
     public double getRightStickY() {
-        // return super.getRawAxis(XboxController.Axis.kRightY.value);
         if(Math.abs(getRawAxis(3)) > deadband) {
             return getRawAxis(3); // got this off driver station
         } else {

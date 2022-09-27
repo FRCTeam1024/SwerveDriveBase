@@ -4,11 +4,13 @@
 
 package frc.robot;
 
-import edu.wpi.first.wpilibj.GenericHID;
-import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.commands.DriveWithJoysticks;
 import frc.robot.oi.Logitech;
+import frc.robot.Constants.*;
 import frc.robot.subsystems.SwerveDrive;
 
 /**
@@ -18,17 +20,38 @@ import frc.robot.subsystems.SwerveDrive;
  * subsystems, commands, and button mappings) should be declared here.
  */
 public class RobotContainer {
-  // The robot's subsystems and commands are defined here...
-  Command m_autoCommand = null;
+
+  //Subsystems
   private final SwerveDrive drivetrain = new SwerveDrive();
+
+  //Operator Inputs
   private final Logitech driverController = new Logitech(0);
+
+  //Default Commands
   private final DriveWithJoysticks driveWithController = new DriveWithJoysticks(drivetrain, driverController, true);
+
+  //Chooser for auto
+  SendableChooser<Command> m_AutoChooser = new SendableChooser<>();
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
+    
+    // Configure the dashboard
+    configureDashboard();
+
+    //Assign default commands
+    drivetrain.setDefaultCommand(driveWithController);
+
     // Configure the button bindings
     configureButtonBindings();
-    drivetrain.setDefaultCommand(driveWithController);
+  }
+
+    /**
+   * List any PID subsystems here so that they get disabled when the robot
+   * is disabled and integral error doesn't accumulate.  Usually doesn't matter
+   * since we often don't use integral gain but just in case.
+   */
+  public void disablePIDSubsystems() {
   }
 
   /**
@@ -39,6 +62,46 @@ public class RobotContainer {
    */
   private void configureButtonBindings() {
     //need to add button to switch from field to robot relative
+
+    // DRIVER CONTROLS
+
+
+    //OPERATOR CONTROLS
+  }
+
+   /**
+   * Use this method to configure the dashboard
+   * 
+   */
+  private void configureDashboard() {
+    //Create ShuffleBoard Tabs
+    ShuffleboardTab diagnosticsTab = Shuffleboard.getTab("1024Diagnostics");
+    ShuffleboardTab driverTab = Shuffleboard.getTab("1024Driver");
+    
+    /**
+     * Diagnostics for programmers
+     */
+    //Add command status to dashboard
+    diagnosticsTab.add("DrivetrainCommand",drivetrain)
+       .withSize(2,1)
+       .withPosition(8,0);
+
+    /**
+     * Driver's operator interface
+     */
+
+    //Display the name and version number of the code.
+    driverTab.add("Running Code Version:", BuildConfig.APP_NAME + " " + BuildConfig.APP_VERSION)
+        .withSize(3,1)
+        .withPosition(0,0);
+
+    //Add commands to auto chooser, set default to null to avoid surprise operation
+    m_AutoChooser.setDefaultOption("None", null);   
+
+    //Put the auto chooser on the dashboard
+    driverTab.add("Auto Mode",m_AutoChooser)
+       .withSize(3,1)
+       .withPosition(3,0);
   }
 
   /**
@@ -48,6 +111,6 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     // An ExampleCommand will run in autonomous
-    return m_autoCommand;
+    return m_AutoChooser.getSelected();
   }
 }

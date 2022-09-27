@@ -13,6 +13,20 @@ package frc.robot;
  * constants are needed, to reduce verbosity.
  */
 public final class Constants {
+
+    public static final double PI = 3.14159;
+    public static final boolean CompBot = Robot.isCompBot();
+
+    public static final int PCMID = 3;  // CAN ID for PCM
+
+    // IDs for physical input devices
+    // Make sure order matches that of DriverStation
+    public static final class Inputs {
+    public static final int driverControllerID = 0; // ID for Xbox/Logitech controller
+    public static final int operatorControllerID = 1;
+    }
+
+    //Swerve Drive Drivetrain Related Constants
     public static final class DriveConstants {
         public static final double ksVolts = 0.73394;  //all need to be characterized by the SysId tool
         public static final double kvVoltSecondsPerMeter = 2.4068;
@@ -30,5 +44,21 @@ public final class Constants {
         public static final int gyroID = 1;
 
         public static final int kMaxSpeed = 3;
+    }
+
+    public static final class LimelightConstants {
+        public static final double driverPipe = 2.0;
+        public static final double targetPipe = 1.0;
+        public static final double offPipe = 0.0;
+        
+        public static final double kP = 0.015;
+        public static final double kI = 0;
+        public static final double kD = 0;
+
+        //Reduced these for safety until we are comfortable withe autoaim command
+        public static final double minOutput = -0.75;
+        public static final double maxOutput = 0.75;
+        // 1 degree angle of error which is considered tolerable for the PID
+        public static final double threshold = 0.1;
     }
 }

@@ -8,6 +8,8 @@ import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 
+import edu.wpi.first.wpilibj.DigitalInput;
+
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
  * each mode, as described in the TimedRobot documentation. If you change the name of this class or
@@ -19,12 +21,26 @@ public class Robot extends TimedRobot {
 
   private RobotContainer m_robotContainer;
 
+  private final DigitalInput compBotJumper = new DigitalInput(9);
+  private static boolean compBotState;
+
   /**
    * This function is run when the robot is first started up and should be used for any
    * initialization code.
    */
   @Override
   public void robotInit() {
+
+    //Display and log the name and version of the code that is running
+    System.out.println("Running "+BuildConfig.APP_NAME+" "+BuildConfig.APP_VERSION);
+
+    // Check whether the current robot is the competition robot or the practice robot:
+    if(compBotJumper.get() == false) {
+      compBotState = false;
+    } else {
+      compBotState = true;
+    }
+
     // Instantiate our RobotContainer.  This will perform all our button bindings, and put our
     // autonomous chooser on the dashboard.
     m_robotContainer = new RobotContainer();
@@ -48,7 +64,10 @@ public class Robot extends TimedRobot {
 
   /** This function is called once each time the robot enters Disabled mode. */
   @Override
-  public void disabledInit() {}
+  public void disabledInit() {
+        //Call this to diable any PIDSubsytems to avoid integral windup.
+        m_robotContainer.disablePIDSubsystems();
+  }
 
   @Override
   public void disabledPeriodic() {}
@@ -100,4 +119,12 @@ public class Robot extends TimedRobot {
   /** This function is called periodically whilst in simulation. */
   @Override
   public void simulationPeriodic() {}
+
+  /**
+  * 
+  * @return TRUE if the current robot is the competition robot. Otherwise, false for practice bot.
+  */
+  public static boolean isCompBot() {
+    return compBotState;
+  }
 }
