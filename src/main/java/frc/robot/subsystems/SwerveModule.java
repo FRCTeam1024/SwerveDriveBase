@@ -17,6 +17,11 @@ import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.DriveConstants;
 
+
+//DP:  I am wondering now if we need to have our own swerve module class.  There is SwerveDriveSpecialties 
+//library that provides a module class.  Either way this class would not be 
+//a subsystem on its own so wouldnt extend SubsystemBase.  It is just a helper class to the swervedrive 
+//subsystem.  
 public class SwerveModule extends SubsystemBase {
   private static final double kWheelRadius = 0.0508; //need to double check the actual wheel radius
   private static final int kEncoderResolution = 4096;
