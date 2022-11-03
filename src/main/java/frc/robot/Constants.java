@@ -35,15 +35,30 @@ public final class Constants {
         public static final double ksTurning = 0.77; //also need to be characterized, not certain about how we do so
         public static final double kvTurning = 0.75; 
         public static final double kaTurning = 0; 
-        public static final double kMaxAngularSpeedRadiansPerSecond = Math.PI * 2;
+        public static final double kMaxAngularSpeedRadiansPerSecond = Math.PI / 2; //Math.PI * 2
 
         //no numbers below this are accurate, everything must be configure/found
-        public static final double kModuleMaxAngularVelocity = 1;
-        public static final double kModuleMaxAngularAcceleration = 1;
+        public static final double kModuleMaxAngularVelocity = Math.PI / 2; // Math.PI
+        public static final double kModuleMaxAngularAcceleration = Math. PI / 2; //Math.PI * 2
 
-        public static final int gyroID = 1;
+        public static final int gyroID = 01;
 
-        public static final int kMaxSpeed = 3;
+        public static final int kMaxSpeed = 1; //3
+
+        public static final int angleMotorA = 20;
+        public static final int angleMotorB = 30;
+        public static final int angleMotorC = 40;
+        public static final int angleMotorD = 50;
+
+        public static final int driveMotorA = 21;
+        public static final int driveMotorB = 31;
+        public static final int driveMotorC = 41;
+        public static final int driveMotorD = 51;
+
+        public static final int turnEncoderA = 22;
+        public static final int turnEncoderB = 32;
+        public static final int turnEncoderC = 42;
+        public static final int turnEncoderD = 52;
     }
 
     public static final class LimelightConstants {

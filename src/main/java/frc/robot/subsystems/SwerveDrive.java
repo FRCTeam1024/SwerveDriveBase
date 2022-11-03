@@ -16,17 +16,17 @@ import edu.wpi.first.math.kinematics.SwerveModuleState;
 
 public class SwerveDrive extends SubsystemBase {
 
-  private final Translation2d m_frontLeftLocation = new Translation2d(0.381, 0.381); //need to get size of chassis
-  private final Translation2d m_frontRightLocation = new Translation2d(0.381, -0.381);
-  private final Translation2d m_backLeftLocation = new Translation2d(-0.381, 0.381);
-  private final Translation2d m_backRightLocation = new Translation2d(-0.381, -0.381);
+  private final Translation2d m_frontLeftLocation = new Translation2d(0.425, 0.425); //need to get size of chassis
+  private final Translation2d m_frontRightLocation = new Translation2d(0.425, -0.425);
+  private final Translation2d m_backLeftLocation = new Translation2d(-0.425, 0.425);
+  private final Translation2d m_backRightLocation = new Translation2d(-0.425, -0.425);
 
-  private final SwerveModule a = new SwerveModule(angleMotorChannel, driveMotorChannel, turningEncoderChannel, driveEncoderChannel, encoderReversed, driveReversed);
-  private final SwerveModule b = new SwerveModule(angleMotorChannel, driveMotorChannel, turningEncoderChannel, driveEncoderChannel, encoderReversed, driveReversed);
-  private final SwerveModule c = new SwerveModule(angleMotorChannel, driveMotorChannel, turningEncoderChannel, driveEncoderChannel, encoderReversed, driveReversed);
-  private final SwerveModule d = new SwerveModule(angleMotorChannel, driveMotorChannel, turningEncoderChannel, driveEncoderChannel, encoderReversed, driveReversed);
+  private final SwerveModule a = new SwerveModule(DriveConstants.angleMotorA, DriveConstants.driveMotorA, DriveConstants.turnEncoderA, false, false);
+  private final SwerveModule b = new SwerveModule(DriveConstants.angleMotorB, DriveConstants.driveMotorB, DriveConstants.turnEncoderB, false, false);
+  private final SwerveModule c = new SwerveModule(DriveConstants.angleMotorC, DriveConstants.driveMotorC, DriveConstants.turnEncoderC, false, false);
+  private final SwerveModule d = new SwerveModule(DriveConstants.angleMotorD, DriveConstants.driveMotorD, DriveConstants.turnEncoderD, false, false);
   
-  private final WPI_PigeonIMU pigeon;
+  private final WPI_PigeonIMU pigeon = new WPI_PigeonIMU(DriveConstants.gyroID);
   
   private final SwerveDriveKinematics m_kinematics = new SwerveDriveKinematics(m_frontLeftLocation, m_frontRightLocation, m_backLeftLocation, m_backRightLocation);
 
@@ -34,7 +34,6 @@ public class SwerveDrive extends SubsystemBase {
 
   /** Creates a new SwerveDrive. */
   public SwerveDrive() {
-    pigeon = new WPI_PigeonIMU(DriveConstants.gyroID);
   }
 
   @Override
@@ -54,6 +53,20 @@ public class SwerveDrive extends SubsystemBase {
     b.setDesiredState(moduleStates[1]);
     c.setDesiredState(moduleStates[2]);
     d.setDesiredState(moduleStates[3]);
+  }
+
+  public double getAngle(int id){
+    if(id == 1){
+      return a.getAngle();
+    }else if(id == 2){
+      return b.getAngle();
+    }else if(id == 3){
+      return c.getAngle();
+    }else if(id == 4){
+      return d.getAngle();
+    }else{
+      return Math.PI * 10;
+    }
   }
 
 }

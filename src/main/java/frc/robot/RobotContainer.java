@@ -102,6 +102,23 @@ public class RobotContainer {
     driverTab.add("Auto Mode",m_AutoChooser)
        .withSize(3,1)
        .withPosition(3,0);
+
+
+    driverTab.add("SwerveModule A Angle", drivetrain.getAngle(1))
+        .withSize(1,1)
+        .withPosition(4,0);
+
+    driverTab.add("SwerveModule B Angle", drivetrain.getAngle(2))
+        .withSize(1,1)
+        .withPosition(5,0);
+
+    driverTab.add("SwerveModule C Angle", drivetrain.getAngle(3))
+        .withSize(1,1)
+        .withPosition(4,1);
+
+    driverTab.add("SwerveModule D Angle", drivetrain.getAngle(4))
+        .withSize(1,1)
+        .withPosition(5,1);
   }
 
   /**

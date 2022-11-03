@@ -30,7 +30,6 @@ public class SwerveModule extends SubsystemBase {
   private final WPI_TalonFX m_driveMotor;
 
   private final CANCoder m_turnEncoder;
-  private final CANCoder m_driveEncoder;
 
   private final PIDController m_drivePIDController = new PIDController(1, 0, 0);  //need to characterize drivetrain, using same setup as a tank drive
 
@@ -49,11 +48,10 @@ public class SwerveModule extends SubsystemBase {
     DriveConstants.ksTurning, DriveConstants.kvTurning, DriveConstants.kaTurning);
 
   /** Creates a new SwerveModule. */
-  public SwerveModule(int angleMotorChannel, int driveMotorChannel, int turningEncoderChannel, int driveEncoderChannel, boolean encoderReversed, boolean driveReversed) {
+  public SwerveModule(int angleMotorChannel, int driveMotorChannel, int absoluteEncoder, boolean encoderReversed, boolean driveReversed) {
     m_angleMotor = new WPI_TalonFX(angleMotorChannel);
     m_driveMotor = new WPI_TalonFX(driveMotorChannel);
-    m_turnEncoder = new CANCoder(turningEncoderChannel);
-    m_driveEncoder = new CANCoder(driveEncoderChannel);
+    m_turnEncoder = new CANCoder(absoluteEncoder);
     m_driveMotor.setInverted(driveReversed);
     m_angleMotor.setInverted(encoderReversed);
   }
@@ -61,17 +59,17 @@ public class SwerveModule extends SubsystemBase {
   public void setDesiredState(SwerveModuleState moduleState){
         // Optimize the reference state to avoid spinning further than 90 degrees
         SwerveModuleState state =
-        SwerveModuleState.optimize(moduleState, new Rotation2d(m_turnEncoder.getPosition()));
+        SwerveModuleState.optimize(moduleState, new Rotation2d(m_turnEncoder.getPosition()*(2*Math.PI/2048)));
 
     // Calculate the drive output from the drive PID controller.
     final double driveOutput =
-        m_drivePIDController.calculate(m_driveEncoder.getVelocity(), state.speedMetersPerSecond);
+        m_drivePIDController.calculate(m_driveMotor.getSelectedSensorVelocity()*(10*2*Math.PI/2048), state.speedMetersPerSecond);
 
     final double driveFeedforward = m_driveFeedforward.calculate(state.speedMetersPerSecond);
 
     // Calculate the turning motor output from the turning PID controller.
     final double turnOutput =
-        m_turningPIDController.calculate(m_turnEncoder.getPosition(), state.angle.getRadians());
+        m_turningPIDController.calculate(m_turnEncoder.getPosition()*(2*Math.PI/2048), state.angle.getRadians());
 
     final double turnFeedforward =
         m_turnFeedforward.calculate(m_turningPIDController.getSetpoint().velocity);
@@ -80,9 +78,19 @@ public class SwerveModule extends SubsystemBase {
     m_angleMotor.setVoltage(turnOutput + turnFeedforward);
   }
 
+  public double getDriveVelocity(){
+    return m_driveMotor.getSelectedSensorVelocity()*(10*2*Math.PI/2048);
+  }
+
+  public double getAngle(){
+    return m_turnEncoder.getPosition()*(2*Math.PI/2048);
+  }
+
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
 
   }
+
+
 }
