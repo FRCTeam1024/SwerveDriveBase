@@ -21,10 +21,10 @@ public class SwerveDrive extends SubsystemBase {
   private final Translation2d m_backLeftLocation = new Translation2d(-0.425, 0.425);
   private final Translation2d m_backRightLocation = new Translation2d(-0.425, -0.425);
 
-  private final SwerveModule a = new SwerveModule(DriveConstants.angleMotorA, DriveConstants.driveMotorA, DriveConstants.turnEncoderA, false, false);
-  private final SwerveModule b = new SwerveModule(DriveConstants.angleMotorB, DriveConstants.driveMotorB, DriveConstants.turnEncoderB, false, false);
-  private final SwerveModule c = new SwerveModule(DriveConstants.angleMotorC, DriveConstants.driveMotorC, DriveConstants.turnEncoderC, false, false);
-  private final SwerveModule d = new SwerveModule(DriveConstants.angleMotorD, DriveConstants.driveMotorD, DriveConstants.turnEncoderD, false, false);
+  private final SwerveModule a = new SwerveModule(DriveConstants.angleMotorA, DriveConstants.driveMotorA, DriveConstants.turnEncoderA, DriveConstants.turnOffsetA, false, false);
+  private final SwerveModule b = new SwerveModule(DriveConstants.angleMotorB, DriveConstants.driveMotorB, DriveConstants.turnEncoderB, DriveConstants.turnOffsetB, false, false);
+  private final SwerveModule c = new SwerveModule(DriveConstants.angleMotorC, DriveConstants.driveMotorC, DriveConstants.turnEncoderC, DriveConstants.turnOffsetC, false, false);
+  private final SwerveModule d = new SwerveModule(DriveConstants.angleMotorD, DriveConstants.driveMotorD, DriveConstants.turnEncoderD, DriveConstants.turnOffsetD, false, false);
   
   private final WPI_PigeonIMU pigeon = new WPI_PigeonIMU(DriveConstants.gyroID);
   
@@ -55,18 +55,36 @@ public class SwerveDrive extends SubsystemBase {
     d.setDesiredState(moduleStates[3]);
   }
 
-  public double getAngle(int id){
+  public double getAngleRad(int id){
     if(id == 1){
-      return a.getAngle();
+      return a.getAngleRadians();
     }else if(id == 2){
-      return b.getAngle();
+      return b.getAngleRadians();
     }else if(id == 3){
-      return c.getAngle();
+      return c.getAngleRadians();
     }else if(id == 4){
-      return d.getAngle();
+      return d.getAngleRadians();
     }else{
       return Math.PI * 10;
     }
+  }
+
+  public double getTargetAngleRad(int id){
+    if(id == 1){
+      return a.getTargetAngleRadians();
+    }else if(id == 2){
+      return b.getTargetAngleRadians();
+    }else if(id == 3){
+      return c.getTargetAngleRadians();
+    }else if(id == 4){
+      return d.getTargetAngleRadians();
+    }else{
+      return Math.PI * 10;
+    }
+  }
+
+  public SwerveModuleState[] getTargetStates() {
+    return new SwerveModuleState[]{a.getTargetState(), b.getTargetState(), c.getTargetState(), d.getTargetState()};
   }
 
 }

@@ -38,10 +38,10 @@ public final class Constants {
         public static final double kMaxAngularSpeedRadiansPerSecond = Math.PI / 2; //Math.PI * 2
 
         //no numbers below this are accurate, everything must be configure/found
-        public static final double kModuleMaxAngularVelocity = Math.PI / 2; // Math.PI
-        public static final double kModuleMaxAngularAcceleration = Math. PI / 2; //Math.PI * 2
+        public static final double kModuleMaxAngularVelocity = Math.PI / 2; // Math.PI  (units: rad/s)
+        public static final double kModuleMaxAngularAcceleration = Math.PI / 2; //Math.PI * 2  (units: rad/s/s)
 
-        public static final int gyroID = 01;
+        public static final int gyroID = 1;
 
         public static final int kMaxSpeed = 1; //3
 
@@ -59,6 +59,12 @@ public final class Constants {
         public static final int turnEncoderB = 32;
         public static final int turnEncoderC = 42;
         public static final int turnEncoderD = 52;
+
+        //Turn encoder magnet offsets in degrees.
+        public static final double turnOffsetA = 45;
+        public static final double turnOffsetB = 45;
+        public static final double turnOffsetC = 45;
+        public static final double turnOffsetD = 45;
     }
 
     public static final class LimelightConstants {

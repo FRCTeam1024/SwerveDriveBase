@@ -104,21 +104,38 @@ public class RobotContainer {
        .withPosition(3,0);
 
 
-    driverTab.add("SwerveModule A Angle", drivetrain.getAngle(1))
+    driverTab.addNumber("SwerveModule A Angle", () -> drivetrain.getAngleRad(1))
         .withSize(1,1)
         .withPosition(4,0);
 
-    driverTab.add("SwerveModule B Angle", drivetrain.getAngle(2))
+    driverTab.addNumber("SwerveModule B Angle", () -> drivetrain.getAngleRad(2))
         .withSize(1,1)
         .withPosition(5,0);
 
-    driverTab.add("SwerveModule C Angle", drivetrain.getAngle(3))
+    driverTab.addNumber("SwerveModule C Angle", () -> drivetrain.getAngleRad(3))
         .withSize(1,1)
         .withPosition(4,1);
 
-    driverTab.add("SwerveModule D Angle", drivetrain.getAngle(4))
+    driverTab.addNumber("SwerveModule D Angle", () -> drivetrain.getAngleRad(4))
         .withSize(1,1)
         .withPosition(5,1);
+
+    driverTab.addNumber("SwerveModule A Target Angle", () -> drivetrain.getTargetAngleRad(1))
+        .withSize(1,1)
+        .withPosition(4,3);
+
+    driverTab.addNumber("SwerveModule B Target Angle", () -> drivetrain.getTargetAngleRad(2))
+        .withSize(1,1)
+        .withPosition(5,3);
+
+    driverTab.addNumber("SwerveModule C Target Angle", () -> drivetrain.getTargetAngleRad(3))
+        .withSize(1,1)
+        .withPosition(4,4);
+
+    driverTab.addNumber("SwerveModule D Target Angle", () -> drivetrain.getTargetAngleRad(4))
+        .withSize(1,1)
+        .withPosition(5,4);
+        
   }
 
   /**
