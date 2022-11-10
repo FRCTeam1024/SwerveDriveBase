@@ -39,7 +39,7 @@ public class SwerveDrive extends SubsystemBase {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
-
+    System.out.println(getTargetAngleRad(1));
   }
 
   public void drive(double xSpeed, double ySpeed, double rot, boolean fieldRelative) {
@@ -57,13 +57,13 @@ public class SwerveDrive extends SubsystemBase {
 
   public double getAngleRad(int id){
     if(id == 1){
-      return a.getAngleRadians();
+      return a.getAngleDegrees();
     }else if(id == 2){
-      return b.getAngleRadians();
+      return b.getAngleDegrees();
     }else if(id == 3){
-      return c.getAngleRadians();
+      return c.getAngleDegrees();
     }else if(id == 4){
-      return d.getAngleRadians();
+      return d.getAngleDegrees();
     }else{
       return Math.PI * 10;
     }

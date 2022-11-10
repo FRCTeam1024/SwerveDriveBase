@@ -32,8 +32,8 @@ public final class Constants {
         public static final double kvVoltSecondsPerMeter = 2.4068;
         public static final double kaVoltSecondsSquaredPerMeter = 0.28749;
 
-        public static final double ksTurning = 0.77; //also need to be characterized, not certain about how we do so
-        public static final double kvTurning = 0.75; 
+        public static final double ksTurning = 1; //also need to be characterized, not certain about how we do so
+        public static final double kvTurning = 0.5; 
         public static final double kaTurning = 0; 
         public static final double kMaxAngularSpeedRadiansPerSecond = Math.PI / 2; //Math.PI * 2
 
@@ -61,10 +61,10 @@ public final class Constants {
         public static final int turnEncoderD = 52;
 
         //Turn encoder magnet offsets in degrees.
-        public static final double turnOffsetA = 45;
-        public static final double turnOffsetB = 45;
-        public static final double turnOffsetC = 45;
-        public static final double turnOffsetD = 45;
+        public static final double turnOffsetA = -15;
+        public static final double turnOffsetB = 175;
+        public static final double turnOffsetC = 10;
+        public static final double turnOffsetD = -140;
     }
 
     public static final class LimelightConstants {

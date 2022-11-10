@@ -4,6 +4,7 @@
 
 package frc.robot.subsystems;
 
+import com.ctre.phoenix.motorcontrol.StatusFrame;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 import com.ctre.phoenix.sensors.AbsoluteSensorRange;
 import com.ctre.phoenix.sensors.CANCoder;
@@ -36,7 +37,7 @@ public class SwerveModule {
 
   private final ProfiledPIDController m_turningPIDController =
       new ProfiledPIDController(                      //these also need characterized, but differently, and I don't know exactly how
-          1, //kP
+          0.45, //kP
           0, //kI
           0, //kD
           new TrapezoidProfile.Constraints(
@@ -71,15 +72,18 @@ public class SwerveModule {
     m_turnEncoder.configAbsoluteSensorRange(AbsoluteSensorRange.Signed_PlusMinus180);
     m_turnEncoder.configMagnetOffset(turnOffset);
 
+    m_angleMotor.setStatusFramePeriod(StatusFrame.Status_1_General, 100);
+
     // Limit the PID Controller's input range between -pi and pi and set the input
     // to be continuous.
     m_turningPIDController.enableContinuousInput(-Math.PI, Math.PI);
 
-  }
+    this.state = new SwerveModuleState();
+;  }
 
   public void setDesiredState(SwerveModuleState moduleState){
     // Optimize the reference state to avoid spinning further than 90 degrees
-    state = SwerveModuleState.optimize(moduleState, new Rotation2d(m_turnEncoder.getAbsolutePosition()*Math.PI/180));
+    this.state = SwerveModuleState.optimize(moduleState, new Rotation2d(m_turnEncoder.getAbsolutePosition()*Math.PI/180));
 
     // Calculate the drive output from the drive PID controller.
     // 
@@ -101,7 +105,7 @@ public class SwerveModule {
     final double turnFeedforward =
         m_turnFeedforward.calculate(m_turningPIDController.getSetpoint().velocity);
 
-    m_driveMotor.setVoltage(driveOutput + driveFeedforward);
+    //m_driveMotor.setVoltage(driveOutput + driveFeedforward);
     m_angleMotor.setVoltage(turnOutput + turnFeedforward);
   }
 
@@ -109,8 +113,8 @@ public class SwerveModule {
     return m_driveMotor.getSelectedSensorVelocity()*(10*2*Math.PI/2048);
   }
 
-  public double getAngleRadians(){
-    return m_turnEncoder.getAbsolutePosition()*Math.PI/180;
+  public double getAngleDegrees(){
+    return m_turnEncoder.getAbsolutePosition();
   } 
 
   public SwerveModuleState getState() {
@@ -123,6 +127,6 @@ public class SwerveModule {
   }
 
   public double getTargetAngleRadians(){
-    return state.angle.getRadians();
+    return state.angle.getDegrees();
   }
 }

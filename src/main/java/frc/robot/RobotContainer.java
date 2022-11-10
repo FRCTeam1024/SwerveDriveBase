@@ -5,6 +5,9 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+
+import java.util.Random;
+
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -28,7 +31,7 @@ public class RobotContainer {
   private final Logitech driverController = new Logitech(0);
 
   //Default Commands
-  private final DriveWithJoysticks driveWithController = new DriveWithJoysticks(drivetrain, driverController, true);
+  private final DriveWithJoysticks driveWithController = new DriveWithJoysticks(drivetrain, driverController, false);
 
   //Chooser for auto
   SendableChooser<Command> m_AutoChooser = new SendableChooser<>();
@@ -136,6 +139,7 @@ public class RobotContainer {
         .withSize(1,1)
         .withPosition(5,4);
         
+    
   }
 
   /**
