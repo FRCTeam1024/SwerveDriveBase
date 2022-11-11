@@ -6,6 +6,7 @@ package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.StatusFrame;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
+import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.sensors.AbsoluteSensorRange;
 import com.ctre.phoenix.sensors.CANCoder;
 
@@ -15,15 +16,8 @@ import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
-import edu.wpi.first.wpilibj.Encoder;
-import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.DriveConstants;
-
-
-//DP:  I am wondering now if we need to have our own swerve module class.  There is SwerveDriveSpecialties 
-//library that provides a module class.  Either way this class would not be 
-//a subsystem on its own so wouldnt extend SubsystemBase.  It is just a helper class to the swervedrive 
-//subsystem.  
+ 
 public class SwerveModule {
   private static final double kWheelRadius = 0.0508; //need to double check the actual wheel radius
   private static final int kEncoderResolution = 4096;
@@ -33,21 +27,31 @@ public class SwerveModule {
 
   private final CANCoder m_turnEncoder;
 
-  private final PIDController m_drivePIDController = new PIDController(1, 0, 0);  //need to characterize drivetrain, using same setup as a tank drive
+  private final PIDController m_drivePIDController = 
+      new PIDController(
+          DriveConstants.kPModuleDriveController,
+          DriveConstants.kIModuleDriveController,
+          DriveConstants.kDModuleDriveController); 
 
   private final ProfiledPIDController m_turningPIDController =
-      new ProfiledPIDController(                      //these also need characterized, but differently, and I don't know exactly how
-          0.45, //kP
-          0, //kI
-          0, //kD
+      new ProfiledPIDController(                      
+          DriveConstants.kPModuleTurnController, 
+          DriveConstants.kIModuleTurnController, 
+          DriveConstants.kDModuleTurnController, 
           new TrapezoidProfile.Constraints(
               DriveConstants.kModuleMaxAngularVelocity, DriveConstants.kModuleMaxAngularAcceleration));
 
-  private final SimpleMotorFeedforward m_driveFeedforward = new SimpleMotorFeedforward(
-    DriveConstants.ksVolts, DriveConstants.kvVoltSecondsPerMeter, DriveConstants.kaVoltSecondsSquaredPerMeter);
+  private final SimpleMotorFeedforward m_driveFeedforward = 
+      new SimpleMotorFeedforward(
+          DriveConstants.ksVolts, 
+          DriveConstants.kvVoltSecondsPerMeter, 
+          DriveConstants.kaVoltSecondsSquaredPerMeter);
           
-  private final SimpleMotorFeedforward m_turnFeedforward = new SimpleMotorFeedforward(
-    DriveConstants.ksTurning, DriveConstants.kvTurning, DriveConstants.kaTurning);
+  private final SimpleMotorFeedforward m_turnFeedforward = 
+      new SimpleMotorFeedforward(
+          DriveConstants.ksTurning, 
+          DriveConstants.kvTurning, 
+          DriveConstants.kaTurning);
 
   private SwerveModuleState state;
 
@@ -68,11 +72,17 @@ public class SwerveModule {
     m_driveMotor.setInverted(driveReversed);
     m_angleMotor.setInverted(turnReversed);
 
+    //Set brake mode
+    m_driveMotor.setNeutralMode(NeutralMode.Brake);
+    m_angleMotor.setNeutralMode(NeutralMode.Brake);
+
     //Set how we want to the encoder to read
     m_turnEncoder.configAbsoluteSensorRange(AbsoluteSensorRange.Signed_PlusMinus180);
     m_turnEncoder.configMagnetOffset(turnOffset);
 
-    m_angleMotor.setStatusFramePeriod(StatusFrame.Status_1_General, 100);
+    //Set CAN rates.  Save CAN bus bandwidth by slowing down some CAN that we don't need.
+    m_angleMotor.setStatusFramePeriod(StatusFrame.Status_1_General, 250);
+    m_angleMotor.setStatusFramePeriod(StatusFrame.Status_2_Feedback0, 250);
 
     // Limit the PID Controller's input range between -pi and pi and set the input
     // to be continuous.
@@ -120,10 +130,6 @@ public class SwerveModule {
   public SwerveModuleState getState() {
     return new SwerveModuleState(m_driveMotor.getSelectedSensorVelocity()*(10*2*Math.PI/2048),
                 new Rotation2d(m_turnEncoder.getAbsolutePosition()*Math.PI/180));
-  }
-
-  public SwerveModuleState getTargetState() {
-    return state;
   }
 
   public double getTargetAngleRadians(){

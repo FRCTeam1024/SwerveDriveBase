@@ -83,8 +83,4 @@ public class SwerveDrive extends SubsystemBase {
     }
   }
 
-  public SwerveModuleState[] getTargetStates() {
-    return new SwerveModuleState[]{a.getTargetState(), b.getTargetState(), c.getTargetState(), d.getTargetState()};
-  }
-
 }

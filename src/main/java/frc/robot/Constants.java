@@ -28,6 +28,9 @@ public final class Constants {
 
     //Swerve Drive Drivetrain Related Constants
     public static final class DriveConstants {
+
+        //These values are for the drivetrain control as a whole
+
         public static final double ksVolts = 0.73394;  //all need to be characterized by the SysId tool
         public static final double kvVoltSecondsPerMeter = 2.4068;
         public static final double kaVoltSecondsSquaredPerMeter = 0.28749;
@@ -37,9 +40,18 @@ public final class Constants {
         public static final double kaTurning = 0; 
         public static final double kMaxAngularSpeedRadiansPerSecond = Math.PI / 2; //Math.PI * 2
 
-        //no numbers below this are accurate, everything must be configure/found
-        public static final double kModuleMaxAngularVelocity = Math.PI / 2; // Math.PI  (units: rad/s)
-        public static final double kModuleMaxAngularAcceleration = Math.PI / 2; //Math.PI * 2  (units: rad/s/s)
+        //These are seperate controllers for within swerve modules
+        public static final double kPModuleDriveController = 1;  //Borrowed these values
+        public static final double kIModuleDriveController = 0; 
+        public static final double kDModuleDriveController = 0;
+
+        public static final double kPModuleTurnController = 8.1;  //Borrowed these values
+        public static final double kIModuleTurnController = 0;
+        public static final double kDModuleTurnController = 0;
+
+        //Borrowed these values...
+        public static final double kModuleMaxAngularVelocity = 3 * Math.PI; // Math.PI  (units: rad/s)
+        public static final double kModuleMaxAngularAcceleration = 6 * Math.PI; //Math.PI * 2  (units: rad/s/s)
 
         public static final int gyroID = 1;
 
