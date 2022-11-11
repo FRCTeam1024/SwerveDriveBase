@@ -5,6 +5,7 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.Constants.DriveConstants;
 import frc.robot.oi.Logitech;
 import frc.robot.subsystems.SwerveDrive;
 
@@ -29,9 +30,9 @@ public class DriveWithJoysticks extends CommandBase {
   @Override
   public void execute() {
 
-    double xSpeed = controller.getRightStickX()/3;
-    double ySpeed = controller.getRightStickY()/3;
-    double rot = controller.getLeftStickX()/3;
+    double xSpeed = controller.getRightStickX()/3 * DriveConstants.kMaxWheelSpeedMetersPerSecond;
+    double ySpeed = controller.getRightStickY()/3 * DriveConstants.kMaxWheelSpeedMetersPerSecond;
+    double rot = controller.getLeftStickX()/3 * DriveConstants.kMaxAngularSpeedRadiansPerSecond;
 
     drivetrain.drive(xSpeed, ySpeed, rot, fieldRelative);
   }

@@ -104,8 +104,6 @@ public class SwerveModule {
     final double driveOutput =
         m_drivePIDController.calculate(m_driveMotor.getSelectedSensorVelocity()*(10*2*Math.PI/2048), state.speedMetersPerSecond);
 
-    //DP: should we be passing the curent setpoint of the drivePID as the desired speed rather than the state speed?
-    // I guess this may not matter since it is not a profiled PID controller those values should be the same?
     final double driveFeedforward = m_driveFeedforward.calculate(state.speedMetersPerSecond);
 
     // Calculate the turning motor output from the turning PID controller.

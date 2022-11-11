@@ -29,18 +29,16 @@ public final class Constants {
     //Swerve Drive Drivetrain Related Constants
     public static final class DriveConstants {
 
-        //These values are for the drivetrain control as a whole
-
+        //These are feedforward controllers for within swerve modules
         public static final double ksVolts = 0.73394;  //all need to be characterized by the SysId tool
         public static final double kvVoltSecondsPerMeter = 2.4068;
         public static final double kaVoltSecondsSquaredPerMeter = 0.28749;
 
-        public static final double ksTurning = 1; //also need to be characterized, not certain about how we do so
-        public static final double kvTurning = 0.5; 
+        public static final double ksTurning = 0.77; //Borrowed these values
+        public static final double kvTurning = 0.75; 
         public static final double kaTurning = 0; 
-        public static final double kMaxAngularSpeedRadiansPerSecond = Math.PI / 2; //Math.PI * 2
 
-        //These are seperate controllers for within swerve modules
+        //These are PID controllers for within swerve modules
         public static final double kPModuleDriveController = 1;  //Borrowed these values
         public static final double kIModuleDriveController = 0; 
         public static final double kDModuleDriveController = 0;
@@ -53,9 +51,20 @@ public final class Constants {
         public static final double kModuleMaxAngularVelocity = 3 * Math.PI; // Math.PI  (units: rad/s)
         public static final double kModuleMaxAngularAcceleration = 6 * Math.PI; //Math.PI * 2  (units: rad/s/s)
 
-        public static final int gyroID = 1;
 
-        public static final int kMaxSpeed = 1; //3
+        //Some limits governing overall robot movement
+        public static final double kMaxWheelSpeedMetersPerSecond = 3;
+        public static final double kMaxAngularSpeedRadiansPerSecond = Math.PI * 2; 
+
+
+        //Turn encoder magnet offsets in degrees.  
+        public static final double turnOffsetA = -15; //These may need fine tuned
+        public static final double turnOffsetB = 175;
+        public static final double turnOffsetC = 10;
+        public static final double turnOffsetD = -140;
+
+        //CAN IDs
+        public static final int gyroID = 1;
 
         public static final int angleMotorA = 20;
         public static final int angleMotorB = 30;
@@ -71,12 +80,6 @@ public final class Constants {
         public static final int turnEncoderB = 32;
         public static final int turnEncoderC = 42;
         public static final int turnEncoderD = 52;
-
-        //Turn encoder magnet offsets in degrees.
-        public static final double turnOffsetA = -15;
-        public static final double turnOffsetB = 175;
-        public static final double turnOffsetC = 10;
-        public static final double turnOffsetD = -140;
     }
 
     public static final class LimelightConstants {
