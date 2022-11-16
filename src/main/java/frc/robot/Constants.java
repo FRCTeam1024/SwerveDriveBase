@@ -35,7 +35,7 @@ public final class Constants {
         public static final double kaVoltSecondsSquaredPerMeter = 0.28749;
 
         public static final double ksTurning = 0.77; //Borrowed these values
-        public static final double kvTurning = 0.75; 
+        public static final double kvTurning = 0.75; //.384 to 1.27 (1.27 aligns 12V to 3pi max angular velocity)
         public static final double kaTurning = 0; 
 
         //These are PID controllers for within swerve modules
@@ -51,14 +51,13 @@ public final class Constants {
         public static final double kModuleMaxAngularVelocity = 3 * Math.PI; // Math.PI  (units: rad/s)
         public static final double kModuleMaxAngularAcceleration = 6 * Math.PI; //Math.PI * 2  (units: rad/s/s)
 
-
         //Some limits governing overall robot movement
         public static final double kMaxWheelSpeedMetersPerSecond = 3;
         public static final double kMaxAngularSpeedRadiansPerSecond = Math.PI * 2; 
 
 
         //Turn encoder magnet offsets in degrees.  
-        public static final double turnOffsetA = -15; //These may need fine tuned
+        public static final double turnOffsetA = -15; //May need finer adjustment on these.
         public static final double turnOffsetB = 175;
         public static final double turnOffsetC = 10;
         public static final double turnOffsetD = -140;
