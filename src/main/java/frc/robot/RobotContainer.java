@@ -122,7 +122,7 @@ public class RobotContainer {
     driverTab.addNumber("SwerveModule D Angle", () -> drivetrain.getAngleRad(4))
         .withSize(1,1)
         .withPosition(5,1);
-
+/*
     driverTab.addNumber("SwerveModule A Target Angle", () -> drivetrain.getTargetAngleRad(1))
         .withSize(1,1)
         .withPosition(4,3);
@@ -138,7 +138,7 @@ public class RobotContainer {
     driverTab.addNumber("SwerveModule D Target Angle", () -> drivetrain.getTargetAngleRad(4))
         .withSize(1,1)
         .withPosition(5,4);
-        
+        */
     
   }
 

@@ -53,7 +53,7 @@ public class SwerveModule {
           DriveConstants.kvTurning, 
           DriveConstants.kaTurning);
 
-  private SwerveModuleState state;
+ // private SwerveModuleState state;
 
   /** Creates a new SwerveModule. */
   public SwerveModule(int angleMotorChannel, int driveMotorChannel, int turnEncoderChannel, 
@@ -88,12 +88,12 @@ public class SwerveModule {
     // to be continuous.
     m_turningPIDController.enableContinuousInput(-Math.PI, Math.PI);
 
-    this.state = new SwerveModuleState();
+   // this.state = new SwerveModuleState();
 ;  }
 
   public void setDesiredState(SwerveModuleState moduleState){
     // Optimize the reference state to avoid spinning further than 90 degrees
-    this.state = SwerveModuleState.optimize(moduleState, new Rotation2d(m_turnEncoder.getAbsolutePosition()*Math.PI/180));
+    SwerveModuleState state = SwerveModuleState.optimize(moduleState, new Rotation2d(m_turnEncoder.getAbsolutePosition()*Math.PI/180));
 
     // Calculate the drive output from the drive PID controller.
     // 
@@ -102,7 +102,7 @@ public class SwerveModule {
     // need to be include in this conversion somehow.
     //
     final double driveOutput =
-        m_drivePIDController.calculate(m_driveMotor.getSelectedSensorVelocity()*(10*2*Math.PI/2048), state.speedMetersPerSecond);
+        m_drivePIDController.calculate(m_driveMotor.getSelectedSensorVelocity()*(10*0.1/2048), state.speedMetersPerSecond);
 
     final double driveFeedforward = m_driveFeedforward.calculate(state.speedMetersPerSecond);
 
@@ -113,7 +113,7 @@ public class SwerveModule {
     final double turnFeedforward =
         m_turnFeedforward.calculate(m_turningPIDController.getSetpoint().velocity);
 
-    //m_driveMotor.setVoltage(driveOutput + driveFeedforward);
+    m_driveMotor.setVoltage(driveOutput + driveFeedforward);
     m_angleMotor.setVoltage(turnOutput + turnFeedforward);
   }
 
@@ -129,8 +129,9 @@ public class SwerveModule {
     return new SwerveModuleState(m_driveMotor.getSelectedSensorVelocity()*(10*2*Math.PI/2048),
                 new Rotation2d(m_turnEncoder.getAbsolutePosition()*Math.PI/180));
   }
-
+/*
   public double getTargetAngleRadians(){
     return state.angle.getDegrees();
   }
+  */
 }

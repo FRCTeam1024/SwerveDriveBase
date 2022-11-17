@@ -16,19 +16,19 @@ import edu.wpi.first.math.kinematics.SwerveModuleState;
 
 public class SwerveDrive extends SubsystemBase {
 
-  private final Translation2d m_frontLeftLocation = new Translation2d(0.425, 0.425); //need to get size of chassis
-  private final Translation2d m_frontRightLocation = new Translation2d(0.425, -0.425);
-  private final Translation2d m_backLeftLocation = new Translation2d(-0.425, 0.425);
-  private final Translation2d m_backRightLocation = new Translation2d(-0.425, -0.425);
+  private final Translation2d m_ALocation = new Translation2d(0.3016, -0.3016); //need to get size of chassis
+  private final Translation2d m_BLocation = new Translation2d(0.3016, 0.3016);
+  private final Translation2d m_CLocation = new Translation2d(-0.3016, 0.3016);
+  private final Translation2d m_DLocation = new Translation2d(-0.3016, -0.3016);
 
-  private final SwerveModule a = new SwerveModule(DriveConstants.angleMotorA, DriveConstants.driveMotorA, DriveConstants.turnEncoderA, DriveConstants.turnOffsetA, false, false);
-  private final SwerveModule b = new SwerveModule(DriveConstants.angleMotorB, DriveConstants.driveMotorB, DriveConstants.turnEncoderB, DriveConstants.turnOffsetB, false, false);
-  private final SwerveModule c = new SwerveModule(DriveConstants.angleMotorC, DriveConstants.driveMotorC, DriveConstants.turnEncoderC, DriveConstants.turnOffsetC, false, false);
-  private final SwerveModule d = new SwerveModule(DriveConstants.angleMotorD, DriveConstants.driveMotorD, DriveConstants.turnEncoderD, DriveConstants.turnOffsetD, false, false);
+  private final SwerveModule a = new SwerveModule(DriveConstants.angleMotorA, DriveConstants.driveMotorA, DriveConstants.turnEncoderA, DriveConstants.turnOffsetA, true, true);
+  private final SwerveModule b = new SwerveModule(DriveConstants.angleMotorB, DriveConstants.driveMotorB, DriveConstants.turnEncoderB, DriveConstants.turnOffsetB, true, false);
+  private final SwerveModule c = new SwerveModule(DriveConstants.angleMotorC, DriveConstants.driveMotorC, DriveConstants.turnEncoderC, DriveConstants.turnOffsetC, true, false);
+  private final SwerveModule d = new SwerveModule(DriveConstants.angleMotorD, DriveConstants.driveMotorD, DriveConstants.turnEncoderD, DriveConstants.turnOffsetD, true, true);
   
   private final WPI_PigeonIMU pigeon = new WPI_PigeonIMU(DriveConstants.gyroID);
   
-  private final SwerveDriveKinematics m_kinematics = new SwerveDriveKinematics(m_frontLeftLocation, m_frontRightLocation, m_backLeftLocation, m_backRightLocation);
+  private final SwerveDriveKinematics m_kinematics = new SwerveDriveKinematics(m_ALocation, m_BLocation, m_CLocation, m_DLocation);
 
   private final SwerveDriveOdometry m_odometry = new SwerveDriveOdometry(m_kinematics, pigeon.getRotation2d());
 
@@ -39,7 +39,7 @@ public class SwerveDrive extends SubsystemBase {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
-    System.out.println(getTargetAngleRad(1));
+  
   }
 
   public void drive(double xSpeed, double ySpeed, double rot, boolean fieldRelative) {
@@ -68,7 +68,7 @@ public class SwerveDrive extends SubsystemBase {
       return Math.PI * 10;
     }
   }
-
+/*
   public double getTargetAngleRad(int id){
     if(id == 1){
       return a.getTargetAngleRadians();
@@ -82,5 +82,5 @@ public class SwerveDrive extends SubsystemBase {
       return Math.PI * 10;
     }
   }
-
+*/
 }
