@@ -30,9 +30,9 @@ public class DriveWithJoysticks extends CommandBase {
   @Override
   public void execute() {
 
-    double xSpeed = -controller.getLeftStickX()/2 * DriveConstants.kMaxWheelSpeedMetersPerSecond;
-    double ySpeed = controller.getLeftStickY()/2 * DriveConstants.kMaxWheelSpeedMetersPerSecond;
-    double rot = -controller.getRightStickX()/2 * DriveConstants.kMaxAngularSpeedRadiansPerSecond;
+    double xSpeed = -controller.getLeftStickY() * DriveConstants.kMaxWheelSpeedMetersPerSecond;
+    double ySpeed = -controller.getLeftStickX() * DriveConstants.kMaxWheelSpeedMetersPerSecond;
+    double rot = -controller.getRightStickX() * DriveConstants.kMaxAngularSpeedRadiansPerSecond;
 
     drivetrain.drive(xSpeed, ySpeed, rot, fieldRelative);
   }

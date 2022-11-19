@@ -29,6 +29,9 @@ public final class Constants {
     //Swerve Drive Drivetrain Related Constants
     public static final class DriveConstants {
 
+        public static final double gearRatio = 6.75;
+        public static final double wheelCircumference = 0.309;
+        public static final double encoderTicks = 2048;
         //These are feedforward controllers for within swerve modules
         public static final double ksVolts = 0.73394;  //all need to be characterized by the SysId tool
         public static final double kvVoltSecondsPerMeter = 2.4068;
@@ -57,10 +60,10 @@ public final class Constants {
 
 
         //Turn encoder magnet offsets in degrees.  
-        public static final double turnOffsetA = -15; //May need finer adjustment on these.
-        public static final double turnOffsetB = 175;
-        public static final double turnOffsetC = 10;
-        public static final double turnOffsetD = -140;
+        public static final double turnOffsetA = 75; //May need finer adjustment on these.
+        public static final double turnOffsetB = -95;
+        public static final double turnOffsetC = 100;
+        public static final double turnOffsetD = -50;
 
         //CAN IDs
         public static final int gyroID = 1;

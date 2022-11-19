@@ -11,6 +11,7 @@ import java.util.Random;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import frc.robot.commands.DriveWithJoysticks;
 import frc.robot.oi.Logitech;
 import frc.robot.Constants.*;
@@ -31,7 +32,7 @@ public class RobotContainer {
   private final Logitech driverController = new Logitech(0);
 
   //Default Commands
-  private final DriveWithJoysticks driveWithController = new DriveWithJoysticks(drivetrain, driverController, false);
+  private final DriveWithJoysticks driveWithController = new DriveWithJoysticks(drivetrain, driverController, true);
 
   //Chooser for auto
   SendableChooser<Command> m_AutoChooser = new SendableChooser<>();
@@ -67,7 +68,7 @@ public class RobotContainer {
     //need to add button to switch from field to robot relative
 
     // DRIVER CONTROLS
-
+    driverController.aButton.whenPressed(() -> drivetrain.zeroHeading());
 
     //OPERATOR CONTROLS
   }
@@ -77,6 +78,7 @@ public class RobotContainer {
    * 
    */
   private void configureDashboard() {
+
     //Create ShuffleBoard Tabs
     ShuffleboardTab diagnosticsTab = Shuffleboard.getTab("1024Diagnostics");
     ShuffleboardTab driverTab = Shuffleboard.getTab("1024Driver");
@@ -122,6 +124,9 @@ public class RobotContainer {
     driverTab.addNumber("SwerveModule D Angle", () -> drivetrain.getAngleRad(4))
         .withSize(1,1)
         .withPosition(5,1);
+
+    driverTab.addNumber("Robot Yaw", () -> drivetrain.getYawDegrees())
+        .withSize(1,1);
 /*
     driverTab.addNumber("SwerveModule A Target Angle", () -> drivetrain.getTargetAngleRad(1))
         .withSize(1,1)

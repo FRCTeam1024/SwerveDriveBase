@@ -102,7 +102,7 @@ public class SwerveModule {
     // need to be include in this conversion somehow.
     //
     final double driveOutput =
-        m_drivePIDController.calculate(m_driveMotor.getSelectedSensorVelocity()*(10*0.1/2048), state.speedMetersPerSecond);
+        m_drivePIDController.calculate(m_driveMotor.getSelectedSensorVelocity()*(10*DriveConstants.wheelCircumference/(DriveConstants.encoderTicks*DriveConstants.gearRatio)), state.speedMetersPerSecond);
 
     final double driveFeedforward = m_driveFeedforward.calculate(state.speedMetersPerSecond);
 

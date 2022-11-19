@@ -6,6 +6,8 @@ package frc.robot.subsystems;
 
 import com.ctre.phoenix.sensors.WPI_PigeonIMU;
 
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
@@ -16,10 +18,10 @@ import edu.wpi.first.math.kinematics.SwerveModuleState;
 
 public class SwerveDrive extends SubsystemBase {
 
-  private final Translation2d m_ALocation = new Translation2d(0.3016, -0.3016); //need to get size of chassis
-  private final Translation2d m_BLocation = new Translation2d(0.3016, 0.3016);
-  private final Translation2d m_CLocation = new Translation2d(-0.3016, 0.3016);
-  private final Translation2d m_DLocation = new Translation2d(-0.3016, -0.3016);
+  private final Translation2d m_ALocation = new Translation2d(0.3016, 0.3016); //need to get size of chassis
+  private final Translation2d m_BLocation = new Translation2d(-0.3016, 0.3016);
+  private final Translation2d m_CLocation = new Translation2d(-0.3016, -0.3016);
+  private final Translation2d m_DLocation = new Translation2d(0.3016, -0.3016);
 
   private final SwerveModule a = new SwerveModule(DriveConstants.angleMotorA, DriveConstants.driveMotorA, DriveConstants.turnEncoderA, DriveConstants.turnOffsetA, true, true);
   private final SwerveModule b = new SwerveModule(DriveConstants.angleMotorB, DriveConstants.driveMotorB, DriveConstants.turnEncoderB, DriveConstants.turnOffsetB, true, false);
@@ -32,14 +34,24 @@ public class SwerveDrive extends SubsystemBase {
 
   private final SwerveDriveOdometry m_odometry = new SwerveDriveOdometry(m_kinematics, pigeon.getRotation2d());
 
+  private double[] yawPitchRoll = new double[3];
+
   /** Creates a new SwerveDrive. */
   public SwerveDrive() {
+    pigeon.setYaw(0);
   }
 
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
-  
+    m_odometry.update(
+            pigeon.getRotation2d(),
+            a.getState(),
+            b.getState(),
+            c.getState(),
+            d.getState()
+    );
+
   }
 
   public void drive(double xSpeed, double ySpeed, double rot, boolean fieldRelative) {
@@ -68,19 +80,25 @@ public class SwerveDrive extends SubsystemBase {
       return Math.PI * 10;
     }
   }
-/*
-  public double getTargetAngleRad(int id){
-    if(id == 1){
-      return a.getTargetAngleRadians();
-    }else if(id == 2){
-      return b.getTargetAngleRadians();
-    }else if(id == 3){
-      return c.getTargetAngleRadians();
-    }else if(id == 4){
-      return d.getTargetAngleRadians();
-    }else{
-      return Math.PI * 10;
-    }
+
+
+  private double getRawYaw() {
+    pigeon.getYawPitchRoll(yawPitchRoll);
+    return yawPitchRoll[0];
   }
-*/
+
+  public Rotation2d getYawRotation2d() {
+    return new Rotation2d(Math.PI * getRawYaw()/180);
+  }
+
+  public double getYawDegrees() {
+    //return getYawRotation2d().getDegrees();
+    return m_odometry.getPoseMeters().getRotation().getDegrees();
+  }
+
+  public void zeroHeading(){
+    pigeon.reset();
+    Pose2d pose = new Pose2d(m_odometry.getPoseMeters().getTranslation(),new Rotation2d(0));
+    m_odometry.resetPosition(pose, pigeon.getRotation2d());
+  }
 }
