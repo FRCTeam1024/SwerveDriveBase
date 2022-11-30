@@ -18,7 +18,7 @@ import edu.wpi.first.math.kinematics.SwerveModuleState;
 
 public class SwerveDrive extends SubsystemBase {
 
-  private final Translation2d m_ALocation = new Translation2d(0.3016, 0.3016); //need to get size of chassis
+  private final Translation2d m_ALocation = new Translation2d(0.3016, 0.3016); 
   private final Translation2d m_BLocation = new Translation2d(-0.3016, 0.3016);
   private final Translation2d m_CLocation = new Translation2d(-0.3016, -0.3016);
   private final Translation2d m_DLocation = new Translation2d(0.3016, -0.3016);
@@ -32,13 +32,18 @@ public class SwerveDrive extends SubsystemBase {
   
   private final SwerveDriveKinematics m_kinematics = new SwerveDriveKinematics(m_ALocation, m_BLocation, m_CLocation, m_DLocation);
 
-  private final SwerveDriveOdometry m_odometry = new SwerveDriveOdometry(m_kinematics, pigeon.getRotation2d());
+  private final SwerveDriveOdometry m_odometry;
 
   private double[] yawPitchRoll = new double[3];
 
   /** Creates a new SwerveDrive. */
   public SwerveDrive() {
     pigeon.setYaw(0);
+
+    m_odometry = new SwerveDriveOdometry(m_kinematics, pigeon.getRotation2d());
+
+
+
   }
 
   @Override

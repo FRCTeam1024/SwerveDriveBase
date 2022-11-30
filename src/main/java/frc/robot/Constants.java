@@ -29,9 +29,10 @@ public final class Constants {
     //Swerve Drive Drivetrain Related Constants
     public static final class DriveConstants {
 
-        public static final double gearRatio = 6.75;
-        public static final double wheelCircumference = 0.309;
-        public static final double encoderTicks = 2048;
+        public static final double gearRatio = 6.75; //SDS mk4i L2
+        public static final double wheelCircumference = 0.309;  //SDS mk4i L2
+        public static final double encoderTicks = 2048;  //CANCoder
+
         //These are feedforward controllers for within swerve modules
         public static final double ksVolts = 0.73394;  //all need to be characterized by the SysId tool
         public static final double kvVoltSecondsPerMeter = 2.4068;
