@@ -51,11 +51,15 @@ public class SwerveModule {
           DriveConstants.kvTurning, 
           DriveConstants.kaTurning);
 
+  private final double defaultAngle;
+
  // private SwerveModuleState state;
 
   /** Creates a new SwerveModule. */
   public SwerveModule(int angleMotorChannel, int driveMotorChannel, int turnEncoderChannel, 
-    double turnOffset, boolean turnReversed, boolean driveReversed) {
+    double turnOffset, boolean turnReversed, boolean driveReversed, double angle) {
+
+    defaultAngle = angle;
 
     m_angleMotor = new WPI_TalonFX(angleMotorChannel);
     m_driveMotor = new WPI_TalonFX(driveMotorChannel);
@@ -85,7 +89,6 @@ public class SwerveModule {
     // Limit the PID Controller's input range between -pi and pi and set the input
     // to be continuous.
     m_turningPIDController.enableContinuousInput(-Math.PI, Math.PI);
-
    // this.state = new SwerveModuleState();
 ;  }
 
@@ -93,6 +96,9 @@ public class SwerveModule {
     // Optimize the reference state to avoid spinning further than 90 degrees
     SwerveModuleState state = SwerveModuleState.optimize(moduleState, new Rotation2d(getAngleRadians()));
 
+    if(state.speedMetersPerSecond == 0){
+      state.angle = new Rotation2d(defaultAngle);
+    }
     // Calculate the drive output from the drive PID controller.
     // 
     // DP: I think we can configure the selected sensor in the constructor with the desired resolution so we done have 
@@ -111,8 +117,9 @@ public class SwerveModule {
     final double turnFeedforward =
         m_turnFeedforward.calculate(m_turningPIDController.getSetpoint().velocity);
 
-    m_driveMotor.setVoltage(driveOutput + driveFeedforward);
-    m_angleMotor.setVoltage(turnOutput + turnFeedforward);
+   m_driveMotor.setVoltage(driveOutput + driveFeedforward);
+   m_angleMotor.setVoltage(turnOutput + turnFeedforward);
+
   }
 
   public double getDriveVelocity(){

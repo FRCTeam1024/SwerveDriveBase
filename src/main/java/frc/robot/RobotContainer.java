@@ -69,7 +69,7 @@ public class RobotContainer {
 
     // DRIVER CONTROLS
     driverController.aButton.whenPressed(() -> drivetrain.zeroHeading());
-
+    driverController.rightTrigger.whileHeld(new DriveWithJoysticks(drivetrain, driverController, false));
     //OPERATOR CONTROLS
   }
 
