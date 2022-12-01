@@ -23,10 +23,10 @@ public class SwerveDrive extends SubsystemBase {
   private final Translation2d m_CLocation = new Translation2d(-0.3016, -0.3016);
   private final Translation2d m_DLocation = new Translation2d(0.3016, -0.3016);
 
-  private final SwerveModule a = new SwerveModule(DriveConstants.angleMotorA, DriveConstants.driveMotorA, DriveConstants.turnEncoderA, DriveConstants.turnOffsetA, true, true);
-  private final SwerveModule b = new SwerveModule(DriveConstants.angleMotorB, DriveConstants.driveMotorB, DriveConstants.turnEncoderB, DriveConstants.turnOffsetB, true, false);
-  private final SwerveModule c = new SwerveModule(DriveConstants.angleMotorC, DriveConstants.driveMotorC, DriveConstants.turnEncoderC, DriveConstants.turnOffsetC, true, false);
-  private final SwerveModule d = new SwerveModule(DriveConstants.angleMotorD, DriveConstants.driveMotorD, DriveConstants.turnEncoderD, DriveConstants.turnOffsetD, true, true);
+  private final SwerveModule a = new SwerveModule(DriveConstants.angleMotorA, DriveConstants.driveMotorA, DriveConstants.turnEncoderA, DriveConstants.turnOffsetA, true, true, Math.PI/4);
+  private final SwerveModule b = new SwerveModule(DriveConstants.angleMotorB, DriveConstants.driveMotorB, DriveConstants.turnEncoderB, DriveConstants.turnOffsetB, true, false, 3*Math.PI/4);
+  private final SwerveModule c = new SwerveModule(DriveConstants.angleMotorC, DriveConstants.driveMotorC, DriveConstants.turnEncoderC, DriveConstants.turnOffsetC, true, false, Math.PI/4);
+  private final SwerveModule d = new SwerveModule(DriveConstants.angleMotorD, DriveConstants.driveMotorD, DriveConstants.turnEncoderD, DriveConstants.turnOffsetD, true, true, 3*Math.PI/4);
   
   private final WPI_PigeonIMU pigeon = new WPI_PigeonIMU(DriveConstants.gyroID);
   
@@ -102,8 +102,21 @@ public class SwerveDrive extends SubsystemBase {
   }
 
   public void zeroHeading(){
+    Pose2d pose = new Pose2d(m_odometry.getPoseMeters().getTranslation(), pigeon.getRotation2d());
     pigeon.reset();
-    Pose2d pose = new Pose2d(m_odometry.getPoseMeters().getTranslation(),new Rotation2d(0));
     m_odometry.resetPosition(pose, pigeon.getRotation2d());
+  }
+
+  public void defenseMode(){
+    SwerveModuleState[] moduleStates = {
+      new SwerveModuleState(0, new Rotation2d(Math.PI/4)),
+      new SwerveModuleState(0, new Rotation2d(3*Math.PI/4)),
+      new SwerveModuleState(0, new Rotation2d(Math.PI/4)),
+      new SwerveModuleState(0, new Rotation2d(3*Math.PI/4))
+    };
+    a.setDesiredState(moduleStates[0]);
+    b.setDesiredState(moduleStates[1]);
+    c.setDesiredState(moduleStates[2]);
+    d.setDesiredState(moduleStates[3]);
   }
 }
